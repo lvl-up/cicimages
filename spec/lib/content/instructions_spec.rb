@@ -1,4 +1,4 @@
-require 'exercise'
+require 'content'
 module Content
   describe Instructions do
     include_context :command
