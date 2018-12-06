@@ -9,7 +9,6 @@ require_relative 'helpers'
 require_relative 'errors'
 
 module Content
-
   class Command < Thor
     def self.exit_on_failure?
       true

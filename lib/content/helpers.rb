@@ -69,5 +69,4 @@ module Content
       !File.read(template.rendered_file_path).include?(digest)
     end
   end
-
 end

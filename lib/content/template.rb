@@ -2,7 +2,7 @@ module Content
   class Template
     attr_reader :dir, :path, :full_path
 
-    def initialize(path, project_root_dir)
+    def initialize(path, _project_root_dir)
       @full_path = path
       @dir = parent_directory(path)
       @path = relative_path(path, dir)
@@ -16,7 +16,6 @@ module Content
       File.basename(path)
     end
 
-
     private
 
     def parent_directory(dir)
@@ -26,7 +25,5 @@ module Content
     def relative_path(full_path, root)
       ".#{File.expand_path(full_path).gsub(File.expand_path(root), '')}"
     end
-
   end
-
 end

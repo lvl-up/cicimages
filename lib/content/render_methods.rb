@@ -3,7 +3,6 @@ require 'tmpdir'
 require_relative 'instructions'
 require_relative 'digest_methods'
 
-
 module Content
   module RenderMethods
     include Commandline::Output
