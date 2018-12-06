@@ -6,7 +6,7 @@ EQUALS_SIGN='='
 
 _FUNCTIONS_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# shellcheck source=bin/support/sh/functions/cic.sh
+# shellcheck source=support/bin/sh/functions/cic.sh
 source "${_FUNCTIONS_PATH}/cic.sh"
 
 
@@ -83,6 +83,6 @@ function run_wrapped_command(){
     shift
 
     docker run \
-    $(standard_docker_options) \
-    "${image}" /bin/bash -ilc "$(build_command "${command}" $@)"
+    "$(standard_docker_options)" \
+    "${image}" /bin/bash -ilc "$(build_command "${command}" "${@}")"
 }

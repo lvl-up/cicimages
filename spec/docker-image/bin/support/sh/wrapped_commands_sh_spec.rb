@@ -1,5 +1,5 @@
 describe 'wrapped_commands.sh' do
-  include_context :shell_spec, script_root: 'support/bin/support/sh/functions'
+  include_context :shell_spec, script_root: 'support/bin/sh/functions'
 
   describe '#content_before' do
     it 'returns the content before the given delimeter' do

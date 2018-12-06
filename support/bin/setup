@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 
 CURRENT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-# shellcheck source=image/bin/support/sh/functions/output.sh
-source "${CURRENT_PATH}/support/sh/functions/output.sh"
+# shellcheck source=support/bin/sh/functions/output.sh
+source "${CURRENT_PATH}/sh/functions/output.sh"
 
-# shellcheck source=image/bin/support/sh/functions/cic.sh
-source "${CURRENT_PATH}/support/sh/functions/cic.sh"
+# shellcheck source=support/bin/sh/functions/cic.sh
+source "${CURRENT_PATH}/sh/functions/cic.sh"
 
 function create_network(){
     local name=$1
@@ -21,7 +21,7 @@ function network_exists(){
 }
 
 function init(){
-    if ! $(network_exists "$(cic_network)" )
+    if ! network_exists "$(cic_network)"
     then
         say "$(ok "Setting up docker network")"
         create_network  "$(cic_network)"

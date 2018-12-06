@@ -1,14 +1,14 @@
 #!/usr/bin/env bash
 
 CURRENT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-# shellcheck source=image/bin/support/sh/functions/cic.sh
-source "${CURRENT_PATH}/support/sh/functions/cic.sh"
+# shellcheck source=support/bin/sh/functions/cic.sh
+source "${CURRENT_PATH}/sh/functions/cic.sh"
 
-# shellcheck source=image/bin/support/sh/functions/utils.sh
-source "${CURRENT_PATH}/support/sh/functions/utils.sh"
+# shellcheck source=support/bin/sh/functions/utils.sh
+source "${CURRENT_PATH}/sh/functions/utils.sh"
 
-# shellcheck source=image/bin/support/sh/checksum.sh
-source "${CURRENT_PATH}/support/sh/checksum.sh"
+# shellcheck source=support/bin/sh/checksum.sh
+source "${CURRENT_PATH}/sh/checksum.sh"
 
 check_required_enviroment_is_set
 
@@ -38,7 +38,7 @@ fi
 
 docker run ${options} -t \
     --network "$(cic_network)" \
-    $(docker_mounts) \
+    "$(docker_mounts)" \
     -w "$(cic_working_dir)" \
     "$(cic_image)" \
     /bin/bash -c "${command}"

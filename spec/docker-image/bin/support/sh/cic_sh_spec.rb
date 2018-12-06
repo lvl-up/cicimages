@@ -1,5 +1,5 @@
 describe 'cic.sh' do
-  include_context :shell_spec, script_root: 'support/bin/support/sh/functions'
+  include_context :shell_spec, script_root: 'support/bin/sh/functions'
   let(:stubbed_env) { create_stubbed_env }
 
   describe '#cic_working_directory' do

@@ -25,7 +25,8 @@ function cic_pwd(){
 
 function working_directory(){
 
-    local current_dir="$(pwd)"
+    local current_dir
+    current_dir="$(pwd)"
 
     if [[ "${current_dir}" =~  ^/mnt/cic_working_dir ]]
     then
@@ -80,7 +81,7 @@ function target_exercises_path(){
 function cic_working_dir(){
     if [[ "$(pwd)" =~ ^/mnt/cic_working_dir ]]
     then
-        echo "$(pwd)"
+        pwd
     else
         echo "/mnt/cic_working_dir"
     fi
@@ -105,11 +106,11 @@ function docker_mounts(){
     local mounts
     mounts="${mounts} -v /var/run/docker.sock:/var/run/docker.sock"
     mounts="${mounts} -v /sys/fs/cgroup:/sys/fs/cgroup:ro"
-    mounts="${mounts} -v "$(source_tracks_path)":$(target_tracks_path)"
-    mounts="${mounts} -v "$(source_scaffold_path)":$(target_scaffold_path)"
-    mounts="${mounts} -v "$(source_scaffold_structure)":$(target_scaffold_structure)"
-    mounts="${mounts} -v "$(source_exercises_path)":$(target_exercises_path)"
-    mounts="${mounts} -v "${HOME}/.netrc":/root/.netrc"
+    mounts="${mounts} -v $(source_tracks_path):$(target_tracks_path)"
+    mounts="${mounts} -v $(source_scaffold_path):$(target_scaffold_path)"
+    mounts="${mounts} -v $(source_scaffold_structure):$(target_scaffold_structure)"
+    mounts="${mounts} -v $(source_exercises_path):$(target_exercises_path)"
+    mounts="${mounts} -v ${HOME}/.netrc:/root/.netrc"
     mounts="${mounts} -v $(working_directory):$(cic_working_dir)"
 
     echo "${mounts}"

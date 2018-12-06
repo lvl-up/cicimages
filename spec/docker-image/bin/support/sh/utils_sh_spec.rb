@@ -1,5 +1,5 @@
 describe 'utils.sh' do
-  include_context :shell_spec, script_root: 'support/bin/support/sh/functions'
+  include_context :shell_spec, script_root: 'support/bin/sh/functions'
 
   describe 'exit_unless_var_defined' do
     context 'var is not defined defined' do

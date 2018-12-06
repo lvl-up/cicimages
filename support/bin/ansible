@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 CURRENT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 
-# shellcheck source=image/bin/support/sh/functions/wrapped_commands.sh
-source "${CURRENT_PATH}/support/sh/functions/wrapped_commands.sh"
+# shellcheck source=support/bin/sh/functions/wrapped_commands.sh
+source "${CURRENT_PATH}/sh/functions/wrapped_commands.sh"
 
-run_wrapped_command cicimages/wrappers-ansible:latest ansible $@
+run_wrapped_command cicimages/wrappers-ansible:latest ansible "${@}"
