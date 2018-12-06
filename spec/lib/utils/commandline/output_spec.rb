@@ -1,3 +1,4 @@
+require 'utils/commandline'
 module Commandline
   describe Output do
     subject do

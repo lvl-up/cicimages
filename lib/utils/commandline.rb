@@ -29,7 +29,7 @@ module Commandline
       Thread.new do
         while (line = io.getc)
           store.write(line.dup)
-          output.write line unless silent || ENV['SILENT']
+          output.write line unless silent
         end
       end
     end

@@ -1,12 +1,13 @@
 require 'utils/commandline'
 module Commandline
   describe Command do
+    include_context :command
+
     describe '#run' do
       context 'fail_on_error true' do
+        subject {described_class.new('boom', raise_on_error: true)}
         it 'returns the result object' do
-          command = described_class.new('boom', raise_on_error: true)
-
-          expect { command.run }.to raise_error(described_class::Error) do |exception|
+          expect {subject.run}.to raise_error(described_class::Error) do |exception|
             expected_return = Return.new(stdout: '', stderr: 'bash: boom: command not found', exit_code: 127)
             expect(exception.command_return).to eq(expected_return)
           end
@@ -14,20 +15,15 @@ module Commandline
       end
 
       context 'dir set' do
+        subject {described_class.new('pwd', dir: Dir.pwd)}
+
         it 'runs the command in that directory' do
-          Dir.mktmpdir do |path|
-            Dir.chdir(path) do
-              command = described_class.new('pwd', dir: path)
-              expect(command.run).to eq(Return.new(stdout: Dir.pwd, stderr: '', exit_code: 0))
-            end
-          end
+          expect(subject.run).to eq(Return.new(stdout: Dir.pwd, stderr: '', exit_code: 0))
         end
       end
 
       context 'silent false' do
-        include_context :command
-
-        subject { described_class.new('echo hello', silent: false) }
+        subject {described_class.new('echo hello', silent: false)}
 
         it 'prints out the output from stdout' do
           subject.run
@@ -36,15 +32,17 @@ module Commandline
       end
 
       context 'environment variables set' do
+        subject {described_class.new('echo "hello ${MYVAR}"', env: {'MYVAR' => 'world'})}
         it 'passes them to the command' do
-          result = described_class.new('echo "hello ${MYVAR}"', env: { 'MYVAR' => 'world' }).run
+          result = subject.run
           expect(result.stdout).to eq('hello world')
         end
       end
 
+      subject {described_class.new('echo hello')}
+
       it 'returns the result object' do
-        command = described_class.new('echo hello')
-        result = command.run
+        result = subject.run
         expect(result).to eq(Return.new(stdout: 'hello', stderr: '', exit_code: 0))
       end
     end
