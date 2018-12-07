@@ -14,11 +14,12 @@ if [ "${subcommand}" == "generate" ] || [ "${subcommand}" == "requiring_update" 
     command="${command} --digest-component=$(cic_image)"
 fi
 
+mounts=($(docker_mounts))
+
 # shellcheck disable=SC2140
 docker run -t \
     --network "$(cic_network)" \
-    -v "$(working_directory)":"$(cic_working_dir)" \
-    "$(docker_mounts)" \
+    ${mounts[@]} \
     -w "$(cic_working_dir)" \
     "$(cic_image)" \
     /bin/bash -ilc "${command}"

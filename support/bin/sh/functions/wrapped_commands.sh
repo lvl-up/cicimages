@@ -73,7 +73,6 @@ function standard_docker_options(){
          "--network $(cic_network)" \
          "-v $(working_directory):$(cic_working_dir)" \
          "-w $(cic_working_dir)"
-
 }
 
 function run_wrapped_command(){
@@ -82,7 +81,9 @@ function run_wrapped_command(){
     local command=$1
     shift
 
+    local options
+    options=($(standard_docker_options))
     docker run \
-    "$(standard_docker_options)" \
+    ${options[@]} \
     "${image}" /bin/bash -ilc "$(build_command "${command}" "${@}")"
 }

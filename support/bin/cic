@@ -36,9 +36,10 @@ else
     fi
 fi
 
+mounts=($(docker_mounts))
 docker run ${options} -t \
     --network "$(cic_network)" \
-    "$(docker_mounts)" \
+    ${mounts[@]} \
     -w "$(cic_working_dir)" \
     "$(cic_image)" \
     /bin/bash -c "${command}"

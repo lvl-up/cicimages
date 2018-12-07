@@ -104,7 +104,7 @@ function bootstrap_cic_environment(){
 
 function docker_mounts(){
     local mounts
-    mounts="${mounts} -v /var/run/docker.sock:/var/run/docker.sock"
+    mounts="-v /var/run/docker.sock:/var/run/docker.sock"
     mounts="${mounts} -v /sys/fs/cgroup:/sys/fs/cgroup:ro"
     mounts="${mounts} -v $(source_tracks_path):$(target_tracks_path)"
     mounts="${mounts} -v $(source_scaffold_path):$(target_scaffold_path)"
