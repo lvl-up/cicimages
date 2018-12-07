@@ -70,22 +70,23 @@ describe 'wrapped_commands.sh' do
 
   describe '#build_command' do
     it 'quotes options in the command' do
-      input = "command --this=that --foo='bar'"
+      input = "command --this=that --foo 'bar'"
       result = execute_function(%(build_command #{input}))
       expect(result).to_not have_error
-      expect(result.stdout).to eq('command --this="that" --foo="bar"')
+      expect(result.stdout).to eq('command --this="that" --foo "bar"')
     end
   end
 
-  describe '#run_wrapped_command' do
+  describe '#run_command' do
     it 'calls docker with the required parameters' do
       docker = stubbed_env.stub_command('docker')
-      stubbed_env.stub_command('standard_docker_options').outputs('standard_options', to: :stdout)
+      stubbed_env.stub_command('options_and_mounts').outputs('standard_options', to: :stdout)
+      stubbed_env.stub_command('bootstrap_cic_environment').outputs('cic_environment', to: :stdout)
 
-      result = execute_function('run_wrapped_command image command args')
+      result = execute_function('run_command image command arg')
 
       expect(result).to_not have_error
-      expected_args = ['run', 'standard_options', 'image', '/bin/bash', '-ilc', 'command args']
+      expected_args = ['run', 'standard_options', 'image', '/bin/bash', '-ilc', 'cic_environment command "arg"']
       expect(docker).to be_called_with_arguments(*expected_args)
     end
   end

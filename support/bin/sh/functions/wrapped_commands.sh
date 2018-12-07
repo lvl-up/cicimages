@@ -58,7 +58,7 @@ function build_command(){
         if [[ "${argument}" =~ ${STARTS_WITH_HYPHEN} ]] && [[ "${argument}" =~ ${EQUALS_SIGN} ]]
         then
             argument=$(sanitise_option "${argument}")
-        elif [[ "${argument}" =~ ${EQUALS_SIGN} ]]
+        elif [[ "${argument}" =~ ${EQUALS_SIGN} ]] || [[ ! "${argument}" =~ ${STARTS_WITH_HYPHEN} ]]
         then
            argument=$(sanitise_value "${argument}")
         fi
