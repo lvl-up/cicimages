@@ -21,7 +21,7 @@ function network_exists(){
 }
 
 function init(){
-    if ! network_exists "$(cic_network)"
+    if ! $(network_exists "$(cic_network)")
     then
         say "$(ok "Setting up docker network")"
         create_network  "$(cic_network)"

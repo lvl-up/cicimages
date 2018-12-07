@@ -69,21 +69,53 @@ function build_command(){
 }
 
 function standard_docker_options(){
-    echo "-t --privileged" \
+    echo "-t" \
+         "--privileged" \
          "--network $(cic_network)" \
-         "-v $(working_directory):$(cic_working_dir)" \
          "-w $(cic_working_dir)"
 }
 
-function run_wrapped_command(){
+function docker_mounts(){
+    local mounts
+    # Needed by cic commands
+    mounts="-v /var/run/docker.sock:/var/run/docker.sock"
+    mounts="${mounts} -v /sys/fs/cgroup:/sys/fs/cgroup:ro"
+    mounts="${mounts} -v $(source_tracks_path):$(target_tracks_path)"
+    mounts="${mounts} -v $(source_scaffold_path):$(target_scaffold_path)"
+    mounts="${mounts} -v $(source_scaffold_structure):$(target_scaffold_structure)"
+    mounts="${mounts} -v $(source_exercises_path):$(target_exercises_path)"
+    mounts="${mounts} -v ${HOME}/.netrc:/root/.netrc"
+
+    # Needed by all commands
+    mounts="${mounts} -v $(working_directory):$(cic_working_dir)"
+
+    echo "${mounts}"
+}
+
+function options_and_mounts(){
+    local extra_options=$1
+    echo "$(docker_mounts) ${extra_options} $(standard_docker_options)"
+}
+
+function run(){
+    local options=($1)
+    local image=$2
+    shift 2
+
+    local command="$(bootstrap_cic_environment) $(build_command "${@}")"
+    docker run ${options[@]} "${image}" /bin/bash -ilc "${command}"
+}
+
+function run_command(){
     local image=$1
     shift
-    local command=$1
+
+    run "$(options_and_mounts)" "${image}" "${@}"
+}
+
+function run_interactive_command(){
+    local image=$1
     shift
 
-    local options
-    options=($(standard_docker_options))
-    docker run \
-    ${options[@]} \
-    "${image}" /bin/bash -ilc "$(build_command "${command}" "${@}")"
+    run "$(options_and_mounts -i)" "${image}" "${@}"
 }

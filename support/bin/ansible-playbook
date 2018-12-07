@@ -4,4 +4,4 @@ CURRENT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 # shellcheck source=support/bin/sh/functions/wrapped_commands.sh
 source "${CURRENT_PATH}/sh/functions/wrapped_commands.sh"
 
-run_wrapped_command "cicimages/wrappers-ansible:latest" "ansible-playbook" $@
+run_command cicimages/wrappers-ansible:latest ansible-playbook "${@}"

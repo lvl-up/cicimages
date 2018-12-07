@@ -2,6 +2,10 @@
 
 CIC_PWD="${CIC_PWD:-$(pwd)}"
 
+# shellcheck source=support/bin/sh/functions/checksum.sh
+_CIC_SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+source "${_CIC_SCRIPT_PATH}/checksum.sh"
+
 
 function cic_network() {
     echo "cic"
@@ -100,18 +104,4 @@ function bootstrap_cic_environment(){
     cic_exports="${cic_exports} CIC_MOUNT=/mnt/cic_working_dir"
 
     echo "${cic_exports}"
-}
-
-function docker_mounts(){
-    local mounts
-    mounts="-v /var/run/docker.sock:/var/run/docker.sock"
-    mounts="${mounts} -v /sys/fs/cgroup:/sys/fs/cgroup:ro"
-    mounts="${mounts} -v $(source_tracks_path):$(target_tracks_path)"
-    mounts="${mounts} -v $(source_scaffold_path):$(target_scaffold_path)"
-    mounts="${mounts} -v $(source_scaffold_structure):$(target_scaffold_structure)"
-    mounts="${mounts} -v $(source_exercises_path):$(target_exercises_path)"
-    mounts="${mounts} -v ${HOME}/.netrc:/root/.netrc"
-    mounts="${mounts} -v $(working_directory):$(cic_working_dir)"
-
-    echo "${mounts}"
 }
