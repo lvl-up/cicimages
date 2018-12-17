@@ -77,17 +77,41 @@ describe 'wrapped_commands.sh' do
     end
   end
 
-  describe '#run_command' do
-    it 'calls docker with the required parameters' do
-      docker = stubbed_env.stub_command('docker')
-      stubbed_env.stub_command('options_and_mounts').outputs('standard_options', to: :stdout)
-      stubbed_env.stub_command('bootstrap_cic_environment').outputs('cic_environment', to: :stdout)
+  pending '#standard_docker_options'
+  pending '#docker_mounts'
+  pending '#options_and_mounts'
 
-      result = execute_function('run_command image command arg')
+  describe '#run' do
+    it 'calls docker with the required parameters' do
+      stubbed_env.stub_command('bootstrap_cic_environment').outputs('cic_environment')
+
+      docker = stubbed_env.stub_command('docker')
+      result = execute_function('run options image command arg')
 
       expect(result).to_not have_error
-      expected_args = ['run', 'standard_options', 'image', '/bin/bash', '-ilc', 'cic_environment command "arg"']
+      expected_args = ['run', 'options', 'image', '/bin/bash', '-ilc', 'cic_environment command "arg"']
       expect(docker).to be_called_with_arguments(*expected_args)
+    end
+  end
+
+
+  describe '#run_command' do
+    it 'calls run' do
+      run = stubbed_env.stub_command('run')
+      stubbed_env.stub_command('options_and_mounts').outputs('standard_options', to: :stdout)
+
+      expect(execute_function('run_interactive_command image command arg')).to_not have_error
+      expect(run).to be_called_with_arguments('standard_options', 'image', 'command', 'arg')
+    end
+  end
+
+  describe '#run_interactive_command' do
+    it 'calls run with a requirement for an interactive session' do
+      run = stubbed_env.stub_command('run')
+      stubbed_env.stub_command('options_and_mounts').with_args('-i').outputs('standard_options', to: :stdout)
+
+      expect(execute_function('run_interactive_command image command arg')).to_not have_error
+      expect(run).to be_called_with_arguments('standard_options', 'image', 'command', 'arg')
     end
   end
 end
