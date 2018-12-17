@@ -92,6 +92,11 @@ describe 'wrapped_commands.sh' do
       expected_args = ['run', 'options', 'image', '/bin/bash', '-ilc', 'cic_environment command "arg"']
       expect(docker).to be_called_with_arguments(*expected_args)
     end
+
+    it 'calls docker correctly', :integration do
+      result = execute("run -i ubuntu 'echo hello'")
+      expect(result.stdout).to eq('hello')
+    end
   end
 
   describe '#run_command' do

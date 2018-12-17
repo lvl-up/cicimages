@@ -17,8 +17,15 @@ task :init do
   end
 end
 
-RSpec::Core::RakeTask.new(:spec) do
-  ENV['COVERAGE'] = 'true'
+namespace :spec do
+  RSpec::Core::RakeTask.new(:unit) do |task|
+    task.rspec_opts = '--tag ~integration'
+    ENV['COVERAGE'] = 'true'
+  end
+
+  RSpec::Core::RakeTask.new(:integration) do |task|
+    task.rspec_opts = '--tag integration'
+  end
 end
 
 YARD::Rake::YardocTask.new
@@ -28,7 +35,7 @@ task :clean do
   FileUtils.rm_rf("#{__dir__}/coverage")
 end
 
-default_tasks = %i[clean spec rubocop shellcheck coverage_check yard]
+default_tasks = %i[clean spec:unit spec:integration rubocop shellcheck coverage_check yard]
 desc default_tasks.join(',')
 task default: default_tasks
 
