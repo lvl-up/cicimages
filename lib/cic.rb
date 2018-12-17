@@ -13,6 +13,9 @@ module CIC
       true
     end
 
+    CIC_DOWN_FAIL_MSG = 'Failed to cic down the environment see above output for details'.freeze
+    CIC_UP_FAILED_MSG = 'Failed to cic up the environment see above output for details'.freeze
+
     desc 'track', 'learning track commands'
     subcommand 'track', Track::Command
 
@@ -26,18 +29,20 @@ module CIC
     end
 
     desc 'down', 'Bring down environment supporting current exercise'
+
     def down
       in_cic_directory do
         run_command('docker-compose down', cic_env)
         say ok("Environment cic'd down :)")
       end
     rescue Commandline::Command::Error => e
-      say error('Failed to cic down the environment see above output for details')
+      say error(CIC_DOWN_FAIL_MSG)
       raise e
     end
 
     desc 'up', 'Bring up environment to support the current exercise'
     # rubocop:disable Metrics/MethodLength
+
     def up
       in_cic_directory do
         before_script = './before'
@@ -49,7 +54,7 @@ module CIC
       end
       say ok("Environment cic'd up :)")
     rescue Commandline::Command::Error => e
-      say error('Failed to cic up the environment see above output for details')
+      say error(CIC_UP_FAILED_MSG)
       raise e
     end
     # rubocop:enable Metrics/MethodLength

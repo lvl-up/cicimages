@@ -77,9 +77,50 @@ describe 'wrapped_commands.sh' do
     end
   end
 
-  pending '#standard_docker_options'
-  pending '#docker_mounts'
-  pending '#options_and_mounts'
+  describe '#standard_docker_options' do
+    it 'outputs the standard options' do
+      result = execute_function('standard_docker_options')
+      expect(result.stdout).to eq('-t --privileged --network cic -w /mnt/cic_working_dir')
+    end
+  end
+
+  describe '#docker_mounts' do
+    it 'outputs the mounts' do
+      result = execute_function('docker_mounts', 'TRACKS_PATH' => :tracks_path.to_s,
+                                                 'SCAFFOLD_PATH' => :scaffold_path.to_s,
+                                                 'SCAFFOLD_STRUCTURE' => :scaffold_structure.to_s,
+                                                 'EXERCISES_PATH' => :exercises_path.to_s)
+
+      expected = '-v /var/run/docker.sock:/var/run/docker.sock '
+      expected << '-v /sys/fs/cgroup:/sys/fs/cgroup:ro '
+      expected << '-v tracks_path:/cic/tracks '
+      expected << '-v scaffold_path:/cic/scaffold '
+      expected << '-v scaffold_structure:/cic/scaffold/scaffold.yml '
+      expected << '-v exercises_path:/cic/exercises '
+      expected << '-v /Users/leon/.netrc:/root/.netrc '
+      expected << "-v #{Dir.pwd}:/mnt/cic_working_dir"
+      expect(result.stdout).to eq(expected)
+    end
+  end
+
+  describe '#options_and_mounts' do
+    before do
+      stubbed_env.stub_command(:docker_mounts.to_s).outputs(:docker_mounts, to: :stdout)
+      stubbed_env.stub_command(:standard_docker_options.to_s).outputs(:standard_docker_options, to: :stdout)
+    end
+
+    context 'extra options' do
+      it 'adds the options' do
+        result = execute_function('options_and_mounts extra_options')
+        expect(result.stdout.chomp).to eq('docker_mounts extra_options standard_docker_options')
+      end
+    end
+
+    it 'outputs the standard docker optins and mounts' do
+      result = execute_function('options_and_mounts')
+      expect(result.stdout.chomp).to eq('docker_mounts  standard_docker_options')
+    end
+  end
 
   describe '#run' do
     it 'calls docker with the required parameters' do

@@ -49,7 +49,12 @@ module CIC
         end
 
         context 'a command fails' do
-          pending 'raises an error'
+          it 'raises an error' do
+            error = Commandline::Command::Error.new(:return)
+            expect(subject).to receive(:run_command).and_raise(error)
+            expect { subject.down }.to raise_error(error)
+            expect(stdout.string).to include(described_class::CIC_DOWN_FAIL_MSG)
+          end
         end
 
         context '.cic directory missing' do
@@ -67,10 +72,31 @@ module CIC
           end
         end
 
-        pending 'supports hooks'
+        context 'before hook present' do
+          it 'runs it' do
+            write_to_file('.cic/before', 'echo hello', mode: '755')
+            expect(subject).to receive(:run_command).with('./before').ordered
+            expect(subject).to receive(:run_command).ordered
+            subject.up
+          end
+        end
+
+        context 'after hook present' do
+          it 'runs it' do
+            write_to_file('.cic/after', 'echo hello', mode: '755')
+            expect(subject).to receive(:run_command).ordered
+            expect(subject).to receive(:run_command).with('./after').ordered
+            subject.up
+          end
+        end
 
         context 'a command fails' do
-          pending 'raises an error'
+          it 'raises an error' do
+            error = Commandline::Command::Error.new(:return)
+            expect(subject).to receive(:run_command).and_raise(error)
+            expect { subject.up }.to raise_error(error)
+            expect(stdout.string).to include(described_class::CIC_UP_FAILED_MSG)
+          end
         end
 
         context '.cic directory missing' do
