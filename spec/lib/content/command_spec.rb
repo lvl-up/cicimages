@@ -29,8 +29,7 @@ module Content
       end
     end
 
-    # TODO: - put the #on the method name
-    describe 'generate' do
+    describe '#generate' do
       include_context :updated_templates
 
       def relative_template_path(path)
