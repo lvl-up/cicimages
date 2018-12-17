@@ -2,8 +2,8 @@
 
 CIC_PWD="${CIC_PWD:-$(pwd)}"
 
-# shellcheck source=support/bin/sh/functions/checksum.sh
 _CIC_SCRIPT_PATH="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+# shellcheck source=support/bin/sh/functions/checksum.sh
 source "${_CIC_SCRIPT_PATH}/checksum.sh"
 
 

@@ -102,8 +102,10 @@ function run(){
     local image=$2
     shift 2
 
-    local command="$(bootstrap_cic_environment) $(build_command "${@}")"
-    docker run ${options[@]} "${image}" /bin/bash -ilc "${command}"
+    local command
+    command="$(bootstrap_cic_environment) $(build_command "${@}")"
+
+    docker run "${options[@]}" "${image}" /bin/bash -ilc "${command}"
 }
 
 function run_command(){

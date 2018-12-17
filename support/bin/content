@@ -7,7 +7,7 @@ source "${CURRENT_PATH}/sh/functions/cic.sh"
 # shellcheck source=support/bin/sh/functions/wrapped_commands.sh
 source "${CURRENT_PATH}/sh/functions/wrapped_commands.sh"
 
-command="rbenv exec content $@"
+command="rbenv exec content $*"
 
 subcommand=$1
 if [ "${subcommand}" == "generate" ] || [ "${subcommand}" == "requiring_update" ]; then
