@@ -8,6 +8,7 @@ end
 
 require 'shared_contexts'
 require 'shared_examples/command_wrapper_examples'
+require 'shared_examples/container_wrapper_examples'
 
 RSpec.configure do |config|
   config.include_context :run_in_temp_directory

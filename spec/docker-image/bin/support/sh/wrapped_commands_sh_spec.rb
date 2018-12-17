@@ -94,7 +94,6 @@ describe 'wrapped_commands.sh' do
     end
   end
 
-
   describe '#run_command' do
     it 'calls run' do
       run = stubbed_env.stub_command('run')

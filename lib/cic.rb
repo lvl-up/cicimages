@@ -44,7 +44,7 @@ module CIC
         after_script = './after'
 
         run_command(before_script) if File.exist?(before_script)
-        # TODO .cic is on CIC_PWD because cic_env is called from within the .cic directory. We should think about changing this to be calculated from outside of the .cic directory. Infact it is safer to leave it is as it is and just change the name of the variable so that people know that it is the directory that the ddocker compose file is in I.e. .cic
+        # TODO: .cic is on CIC_PWD because cic_env is called from within the .cic directory. We should think about changing this to be calculated from outside of the .cic directory. Infact it is safer to leave it is as it is and just change the name of the variable so that people know that it is the directory that the ddocker compose file is in I.e. .cic
         run_command('docker-compose up -d --remove-orphans', cic_env)
         run_command(after_script) if File.exist?(after_script)
       end
