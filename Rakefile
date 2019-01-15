@@ -24,6 +24,7 @@ namespace :spec do
   end
 
   RSpec::Core::RakeTask.new(:integration) do |task|
+    ENV['COVERAGE'] = 'false'
     task.rspec_opts = '--tag integration'
   end
 end

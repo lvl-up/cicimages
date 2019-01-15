@@ -1,7 +1,7 @@
 $LOAD_PATH.unshift("#{__dir__}/../bin/support/ruby/lib")
 $LOAD_PATH.unshift("#{__dir__}/support")
 
-if ENV['COVERAGE']
+if ENV['COVERAGE'] == 'true'
   require 'simplecov'
   SimpleCov.start('rspec')
 end
